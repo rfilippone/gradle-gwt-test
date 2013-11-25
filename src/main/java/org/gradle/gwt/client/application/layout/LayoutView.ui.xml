@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:chzn="urn:import:com.watopi.chosen.client.gwt">
+	<g:HTMLPanel>
+	    <b:Navbar>
+	    	<b:Brand ui:field="brand">Test application</b:Brand>
+	    	<b:Label ui:field="data">No Data</b:Label>
+	    </b:Navbar>
+	    <chzn:ChosenListBox ui:field="countriesChosen"
+                                allowSingleDeselect="true" placeholderText="Choose a country...">
+                                <g:item value=""></g:item>
+                                <g:item value="United States">United States</g:item>
+                                <g:item value="United Kingdom">United Kingdom</g:item>
+                                <g:item value="Afghanistan">Afghanistan</g:item>
+                                <g:item value="Albania">Albania</g:item>
+                                <g:item value="Algeria">Algeria</g:item>
+                                <g:item value="American Samoa">American Samoa</g:item>
+                                <g:item value="Andorra">Andorra</g:item>
+        </chzn:ChosenListBox>
+    	<g:HTMLPanel ui:field="contentPanel"/>
+    </g:HTMLPanel>
+</ui:UiBinder>
