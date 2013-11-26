@@ -7,6 +7,15 @@ from bottle import abort
 
 def authorization(request, session):
     
+    if session.last_accessed is None:
+        abort(401, "Sorry, session expired.")
+
+    if 'username' not in session:
+        abort(401, "No username defined");
+
+    if 'SSK' not in session:
+        abort(401, "No SSK defined");
+    
     for key in request.headers.keys():
         print(key + '=' + request.headers[key])
 

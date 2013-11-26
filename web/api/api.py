@@ -6,7 +6,7 @@ Created on Nov 19, 2013
 from Crypto import Random
 
 import bottle
-from bottle import request, get, abort
+from bottle import request, get
 import beaker.middleware
 import json
 from authorization import authorization
@@ -29,20 +29,17 @@ app = beaker.middleware.SessionMiddleware(bapp, session_opts)
 @get('/login/<username>')
 def login(username):
     s = request.environ['beaker.session']
-    if s.last_accessed is None:        
-        s['SSK'] = Random.get_random_bytes(32).encode('hex')
-    
     s['username'] = username
     
+    if 'SSK' not in s:
+        s['SSK'] = Random.get_random_bytes(32).encode('hex')
+
     result = {'text': "ciao " + username, 'ssk': s['SSK'] }
     return json.dumps(result);
 
 @get('/data')
 def data():
-    s = request.environ['beaker.session']
-    if s.last_accessed is None:        
-        abort(401, "Sorry, session expired.")
-        
+    s = request.environ['beaker.session']        
     authorization(request, s);
     
     result = {'data': "Some data for the user " + s['username'] }
