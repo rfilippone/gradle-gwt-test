@@ -4,3 +4,5 @@
 /.project
 /.gradle
 /bin
+/gwt-unitCache
+/.pydevproject

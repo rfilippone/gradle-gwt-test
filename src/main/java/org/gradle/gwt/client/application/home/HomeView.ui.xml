@@ -3,12 +3,10 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
     <g:HTMLPanel ui:field="abc">
-      <h2>Hello</h2>
+      <h2>Welcome</h2>      
       <hr/>
-      <b:WellForm>
-	      <b:TextBox ui:field="text"/>
-	      <b:Button ui:field="logInButton" text="Log In" />
-      </b:WellForm>
+      <b:Label ui:field="dataLabel">Some text</b:Label>
+      <hr/>      
       <b:WellForm>
 	      <b:Button ui:field="getDataButton" text="Get Data" />
       </b:WellForm>      

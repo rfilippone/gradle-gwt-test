@@ -19,7 +19,9 @@ package org.gradle.gwt.client.gin;
 import org.gradle.gwt.client.application.error.ErrorModule;
 import org.gradle.gwt.client.application.home.HomeModule;
 import org.gradle.gwt.client.application.layout.LayoutModule;
+import org.gradle.gwt.client.application.login.LoginModule;
 import org.gradle.gwt.client.place.NameTokens;
+import org.gradle.gwt.client.place.PlaceManager;
 
 import com.gwtplatform.mvp.client.annotations.DefaultPlace;
 import com.gwtplatform.mvp.client.annotations.ErrorPlace;
@@ -27,21 +29,21 @@ import com.gwtplatform.mvp.client.annotations.UnauthorizedPlace;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 
-
 /**
- * See more on setting up the PlaceManager on <a
- * href="// See more on: https://github.com/ArcBees/GWTP/wiki/PlaceManager">DefaultModule's > DefaultPlaceManager</a>
+ * See more on setting up the PlaceManager on <a href="// See more on: https://github.com/ArcBees/GWTP/wiki/PlaceManager">DefaultModule's >
+ * DefaultPlaceManager</a>
  */
 public class ClientModule extends AbstractPresenterModule {
     @Override
     protected void configure() {
-		install(new LayoutModule());
-		install(new ErrorModule());
-		install(new HomeModule());
-		install(new DefaultModule());
-				
+        install(new DefaultModule(PlaceManager.class));
+        install(new LoginModule());
+        install(new LayoutModule());
+        install(new ErrorModule());
+        install(new HomeModule());
+
         bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);
         bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error);
-        bindConstant().annotatedWith(UnauthorizedPlace.class).to(NameTokens.home);        
+        bindConstant().annotatedWith(UnauthorizedPlace.class).to(NameTokens.login);
     }
 }

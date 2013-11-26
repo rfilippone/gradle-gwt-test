@@ -1,7 +1,6 @@
 package org.gradle.gwt.client.application.layout;
 
 import org.gradle.gwt.client.event.FirstEvent;
-import org.gradle.gwt.client.event.GetDataResultReceivedEvent;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -12,50 +11,47 @@ import com.google.web.bindery.event.shared.binder.EventHandler;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
-public class LayoutPresenter extends
-		Presenter<LayoutPresenter.MyView, LayoutPresenter.MyProxy> {
-	interface MyView extends View {
-		void setBrand(String text);
-		void setData(String text);
-	}
+public class LayoutPresenter extends Presenter<LayoutPresenter.MyView, LayoutPresenter.MyProxy> {
+    interface MyView extends View {
+        void setBrand(String text);
+    }
 
-	interface MyEventBinder extends EventBinder<LayoutPresenter> {}
-	private final MyEventBinder eventBinder = GWT.create(MyEventBinder.class);
+    interface MyEventBinder extends EventBinder<LayoutPresenter> {
+    }
 
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> SLOT_Content = new Type<RevealContentHandler<?>>();
+    private final MyEventBinder eventBinder = GWT.create(MyEventBinder.class);
 
-	@ProxyCodeSplit
-	public interface MyProxy extends Proxy<LayoutPresenter> {
-	}
+    @ContentSlot public static final Type<RevealContentHandler<?>> SLOT_Content = new Type<RevealContentHandler<?>>();
 
-	@Inject
-	public LayoutPresenter(EventBus eventBus, MyView view, MyProxy proxy) {
-		super(eventBus, view, proxy, RevealType.RootLayout);
+    @ProxyCodeSplit
+    @NoGatekeeper
+    public interface MyProxy extends Proxy<LayoutPresenter> {
+    }
 
-		eventBinder.bindEventHandlers(this, eventBus);
-	}
+    @Inject
+    public LayoutPresenter(EventBus eventBus, MyView view, MyProxy proxy) {
+        super(eventBus, view, proxy, RevealType.RootLayout);
 
-	protected void onBind() {
-		super.onBind();
-	}
+        eventBinder.bindEventHandlers(this, eventBus);
+    }
 
-	protected void onReset() {
-		super.onReset();
-	}
+    @Override
+    protected void onBind() {
+        super.onBind();
+    }
 
-	@EventHandler
-	void onFirst(FirstEvent event) {
-		getView().setBrand(event.getText());
-	}
+    @Override
+    protected void onReset() {
+        super.onReset();
+    }
 
-	@EventHandler
-	void onGetDataResultReceived(GetDataResultReceivedEvent event) {
-		getView().setData(event.getData());
-	}
-	
+    @EventHandler
+    void onFirst(FirstEvent event) {
+        getView().setBrand(event.getText());
+    }
 }

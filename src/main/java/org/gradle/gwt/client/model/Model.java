@@ -5,10 +5,23 @@ import com.google.inject.Singleton;
 @Singleton
 public class Model {
 
-	public Model() {
-	}
-	
-	public String user;
-	public boolean isLoggedIn;
-	public String ssk;
+    public String user;
+    public String ssk;
+    private boolean loggedIn = false;
+
+    public Model() {
+    }
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn() {
+        loggedIn = true;
+    }
+
+    public void setLoggedOut() {
+        loggedIn = false;
+    }
+
 }
