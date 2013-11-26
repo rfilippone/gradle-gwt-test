@@ -17,6 +17,7 @@ public class LoginView extends ViewWithUiHandlers<LoginUiHandlers> implements Lo
 
     @UiField SubmitButton loginButton;
     @UiField TextBox usernameTextBox;
+    @UiField TextBox passwordTextBox;
 
     @Inject
     LoginView(Binder uiBinder) {
@@ -33,5 +34,10 @@ public class LoginView extends ViewWithUiHandlers<LoginUiHandlers> implements Lo
     @Override
     public String getUsername() {
         return usernameTextBox.getText();
+    }
+
+    @Override
+    public String getPwd() {
+        return passwordTextBox.getText();
     }
 }

@@ -1,5 +1,7 @@
 package org.gradle.gwt.client.application.login;
 
+import java.util.Date;
+
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.Resource;
@@ -9,8 +11,11 @@ import org.gradle.gwt.client.event.FirstEvent;
 import org.gradle.gwt.client.model.Model;
 import org.gradle.gwt.client.place.NameTokens;
 import org.gradle.gwt.shared.api.APIService;
+import org.sgx.gwtsjcl.client.SJCL;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -28,6 +33,8 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 public class LoginPresenter extends Presenter<LoginPresenter.MyView, LoginPresenter.MyProxy> implements LoginUiHandlers {
     interface MyView extends View, HasUiHandlers<LoginUiHandlers> {
         public String getUsername();
+
+        public String getPwd();
     }
 
     @Inject Model model;
@@ -63,7 +70,14 @@ public class LoginPresenter extends Presenter<LoginPresenter.MyView, LoginPresen
     public void onLoginClicked() {
         Resource resource = new Resource("api");
         ((RestServiceProxy) apiService).setResource(resource);
-        apiService.login(getView().getUsername(), new MethodCallback<APIService.LoginResult>() {
+        APIService.LoginParameters p = new APIService.LoginParameters();
+        SJCL crypto = SJCL.sjcl();
+        DateTimeFormat fmt = DateTimeFormat.getFormat(PredefinedFormat.ISO_8601);
+        p.nonce = crypto.codec().hex().fromBits(crypto.hash().sha256().hash(fmt.format(new Date())));
+        String pwd = crypto.codec().hex().fromBits(crypto.hash().sha256().hash(getView().getPwd()));
+        p.hpwd = crypto.codec().hex().fromBits(crypto.hash().sha256().hash(pwd + p.nonce));
+
+        apiService.login(getView().getUsername(), p, new MethodCallback<APIService.LoginResult>() {
             @Override
             public void onSuccess(Method method, APIService.LoginResult response) {
                 model.setLoggedIn();
